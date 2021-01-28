@@ -1,63 +1,61 @@
 #include <iostream>
 #include <algorithm>
-#include <string.h>
 #include <vector>
+#include <set>
 using namespace std;
-
-int a[2001];
-bool used[2001];
 
 int main() {
     int t; cin >> t;
     while (t--) {
-        memset(used, 0, sizeof(used));
+        multiset<int> set;
         int n; cin >> n;
         for (int i = 0; i < 2 * n; i++) {
-            cin >> a[i];
+            int elem; cin >> elem;
+            set.insert(elem);
         }
-        sort(a, a + 2*n, greater<int>());
+        
+        vector<pair<int, int>> ans;
+        multiset<int> s;
+        copy(set.begin(), set.end(), s.begin());
+        // ì œì¼ í° ì›ì†Œë¥¼ ì œì™¸í•œ ë‚˜ë¨¸ì§€ ì›ì†Œë¥¼ ìˆœíšŒ
+        // ë§¨ ì²˜ìŒìœ¼ë¡œ ê³„ì‚°í•´ì•¼ í•  ì›ì†Œ ì¡°ì‚¬
+        for (auto it = s.rbegin() + 1; it != s.rend(); it++) {
+            int max = *s.rbegin();
+            ans.push_back(make_pair(max, *it));
+            s.erase(*it); s.erase(max);
+            cout << max << '\n';
 
-        vector<pair<int, int>> ansOrder;
-        int maxEle = a[0];
-        used[0] = true;
-        // n¹ø ¹İº¹ÇÏ¿© ¸ğµç ¿ø¼Ò Á¦°Å
-        bool ansExist = true;
-        for (int i = 1; i <= n; i++) {
-            for(int j = 2*n-1; j >= i+1; j--) {
-                if (used[j]) continue;
-                if (a[i] + a[j] > maxEle) {
+            bool ansExist = true;
+            for (int i = 0; i < n; i++) {
+                int tmp = *s.rbegin();
+                auto nextIter = s.find(max - tmp);
+                if (nextIter == s.end()) {
                     ansExist = false;
                     break;
                 }
-                else if (a[i] + a[j] == maxEle) {
-                    used[i] = used[j] = true;
-                    ansOrder.push_back(make_pair(a[i], a[j]));
-                    maxEle = a[i];
-                    break;
+                else {
+                    max = *s.rbegin();
+                    ans.push_back(make_pair(max, *nextIter));
+                    s.erase(max); s.erase(*nextIter);
                 }
             }
-            if (!ansExist) break;
+
+            if (ansExist)
+                break;
+            else {
+                ans.clear();
+                copy(set.begin(), set.end(), s.begin());
+            }
         }
-        
-        if (ansExist) {
-            cout << "YES\n";
-            for (int i = 0; i < 2*n; i++) {
-                if (!used[i]) {
-                    cout << a[0] + a[i] << '\n';
-                    cout << a[i] << ' ' << a[0] << '\n';
-                    break;
-                }
-            }
-            for (auto x : ansOrder) {
+
+        if (ans.size() == n) {
+            cout << "YES\n" << ans[0].first + ans[0].second << '\n';
+            for (auto x : ans) {
                 cout << x.first << ' ' << x.second << '\n';
             }
         }
-        else {
+        else
             cout << "NO\n";
-            for (auto x : ansOrder) {
-                cout << x.first << ' ' << x.second << '\n';
-            }
-        }
     }
     return 0;
 }
