@@ -7,47 +7,49 @@ using namespace std;
 int main() {
     int t; cin >> t;
     while (t--) {
-        multiset<int> set;
         int n; cin >> n;
+        vector<int> a(2*n);
         for (int i = 0; i < 2 * n; i++) {
-            int elem; cin >> elem;
-            set.insert(elem);
+            cin >> a[i];
         }
-        
-        vector<pair<int, int>> ans;
-        multiset<int> s;
-        copy(set.begin(), set.end(), s.begin());
-        // 제일 큰 원소를 제외한 나머지 원소를 순회
-        // 맨 처음으로 계산해야 할 원소 조사
-        for (auto it = s.rbegin() + 1; it != s.rend(); it++) {
-            int max = *s.rbegin();
-            ans.push_back(make_pair(max, *it));
-            s.erase(*it); s.erase(max);
-            cout << max << '\n';
+        sort(a.begin(), a.end(), greater<int>());
 
+        vector<pair<int, int>> ans;
+        // 제일 큰 원소를 제외한 나머지 원소를 순회하며
+        // 맨 처음으로 계산해야 할 원소 조사
+        for (int i = 1; i < 2*n; i++) {
+            multiset<int> s;
+            for (auto& x : a) { s.insert(x); }
+
+            ans.push_back(make_pair(a[0], a[i]));
+            s.erase(s.find(a[0])); s.erase(s.find(a[i]));
+            int x = a[0];
             bool ansExist = true;
-            for (int i = 0; i < n; i++) {
-                int tmp = *s.rbegin();
-                auto nextIter = s.find(max - tmp);
-                if (nextIter == s.end()) {
+            while (!s.empty()) {
+                /*cout << "s : ";
+                for(auto it = s.begin(); it != s.end(); it++) {
+                    cout << *it << ' ';
+                }
+                cout << '\n';*/
+                int ans1 = *s.rbegin();
+                s.erase(s.find(ans1));
+                int ans2 = x - ans1;
+                // if s doesn't have ans2
+                if (s.find(ans2) == s.end()) {
                     ansExist = false;
                     break;
                 }
                 else {
-                    max = *s.rbegin();
-                    ans.push_back(make_pair(max, *nextIter));
-                    s.erase(max); s.erase(*nextIter);
+                    ans.push_back(make_pair(ans1, ans2));
+                    s.erase(s.find(ans2));
+                    x = ans1;
                 }
             }
 
-            if (ansExist)
-                break;
-            else {
-                ans.clear();
-                copy(set.begin(), set.end(), s.begin());
-            }
+            if (ansExist) break;
+            else ans.clear();
         }
-
+        
         if (ans.size() == n) {
             cout << "YES\n" << ans[0].first + ans[0].second << '\n';
             for (auto x : ans) {

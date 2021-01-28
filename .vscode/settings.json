@@ -38,6 +38,7 @@
         "xtr1common": "cpp",
         "xutility": "cpp",
         "queue": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "set": "cpp"
     }
 }
