@@ -39,6 +39,7 @@
         "xutility": "cpp",
         "queue": "cpp",
         "xtree": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "string": "cpp"
     }
 }
