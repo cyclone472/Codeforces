@@ -3,6 +3,7 @@
 using namespace std;
 #define ll long long
 
+// isAns[i] = min + i가 제곱ㄴㄴ수인가?
 bool isAns[1000001];
 
 int main() {
@@ -13,6 +14,8 @@ int main() {
     for (ll i = 2; i <= 1000000; i++) {
         ll squareNum = i * i;
         if (squareNum > max) break;
+        // ex) min = 100, squareNum = 9, then cur = 12
+        //     min = 100, squareNum = 4, then cur = 25 
         ll cur = min / squareNum;
         if (cur * squareNum < min) cur++;
 
