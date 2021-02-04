@@ -4,7 +4,7 @@ using namespace std;
 
 int n;
 
-int remove (vector<int>& hv, int ans) {
+int remove (vector<int>& hv, vector<int>& a, int ans) {
     for (int i = 1; i <= n; i++) {
         if (hv[i] == 1 && hv[i+1] == -1 && hv[i-1] == -1) {
             return ans-3;
@@ -13,10 +13,27 @@ int remove (vector<int>& hv, int ans) {
             return ans-3;
         }
     }
+    bool canRemove = false;
     for (int i = 1; i <= n; i++) {
-        if (hv[i] * hv[i+1] == -1)
-            return ans-2;
+        // hill + valley
+        if (hv[i] == 1 && hv[i+1] == -1) {
+            canRemove = true;
+            if (a[i-1] <= a[i+1] || a[i] <= a[i+2])
+                return ans-2;
+            else if (a[i-2] == a[i-1] || a[i+2] == a[i+3])
+                return ans-2;
+        }
+        // valley + hill
+        else if (hv[i] == -1 && hv[i+1] == 1) {
+            canRemove = true;
+            if (a[i-1] >= a[i+1] || a[i] >= a[i+2])
+                return ans-2;
+            else if (a[i-2] == a[i-1] || a[i+2] == a[i+3])
+                return ans-2;
+        }
     }
+    if (canRemove) return ans-1;
+
     for (int i = 1; i <= n; i++) {
         if (hv[i] == 1 || hv[i] == -1)
             return ans-1;
@@ -49,7 +66,7 @@ int main() {
             ans++;
         }
 
-        cout << remove(hv, ans) << '\n';
+        cout << remove(hv, arr, ans) << '\n';
     }
 
     return 0;
