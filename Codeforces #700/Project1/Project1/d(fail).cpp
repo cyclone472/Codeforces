@@ -5,6 +5,7 @@ const int INF = 123456789;
 
 int arr[100001];
 
+// Test Failed
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
@@ -17,12 +18,6 @@ int main() {
         nextIdx[i] = locate[arr[i]];
         locate[arr[i]] = i;
     }
-    /*
-    cout << "NextIDX : ";
-    for (auto& x : nextIdx) {
-        cout << x << ' ';
-    }
-    cout << '\n'; */
 
     //a1, a2에다가 index를 넣으면?
     vector<int> a1(1, n), a2(1, n);
