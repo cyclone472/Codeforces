@@ -4,7 +4,6 @@
 #include <algorithm>
 using namespace std;
 
-// 0ÀÌ¸é ºó °ø°£, 1ÀÌ¸é ¹Ì³×¶öÀÌ ÀÖÀ½
 int map[101][101];
 int thr[101];
 int caveFloor[101];
@@ -30,16 +29,21 @@ void removeOne (int r, int dir) {
 }
 
 void findCluster (vector<vector<int>>& cluster) {
-    // ¶¥¿¡ ´êÁö ¾Ê¾ÒÀ¸¸é ¶³¾îÁ®¾ß ÇÔ
+    int n = cluster[0].size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << cluster[i][j] << ' ';
+        }
+    }
 }
 
-// ¸î Ä­ ¾Æ·¡·Î ¶³¾îÁ®¾ß ÇÏ´ÂÁö¸¦ ¹ÝÈ¯
-/* Å¬·¯½ºÅÍÀÇ ¹Ù´Ú ¹è¿­ */
 int fallNum (vector<int> row, vector<int> col) {
     int ret = 10000;
     for (int i = col[0], idx = 0; i <= col.back(); i++, idx++) {
         ret = min(ret, row[idx] - caveFloor[i]);
     }
+
+    return ret;
 }
 
 int main() {
@@ -54,12 +58,12 @@ int main() {
     }
     int n; cin >> n;
     for (int i = 0; i < n; i++) {
-        // ´øÁ®¼­ ¹Ì³×¶ö ÇÑ °³¸¦ ¾ø¾Ö°í
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì³×¶ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö°ï¿½
         int thr;
         cin >> thr;
         removeOne(thr, i);
 
-        // bfs·Î Å¬·¯½ºÅÍµéÀ» Å½»ö
+        // bfsï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ Å½ï¿½ï¿½
         queue<int> bfs;
         vector<vector<int>> cluster(row, vector<int>(col, 0));
         for (int j = 0; j < row; j++) {
@@ -69,7 +73,7 @@ int main() {
                 } 
             }
         }
-        // ¶¥
+        // ï¿½ï¿½
     }
 
     for (int i = 0; i < row; i++) {
@@ -78,9 +82,9 @@ int main() {
         }
         cout << '\n';
     }
-    // bfs·Î Å¬·¯½ºÅÍµéÀ» Å½»ö
-    // ¶¥¿¡ ´êÁö ¾ÊÀº Å¬·¯½ºÅÍ°¡ ÀÖÀ¸¸é
-    // ¶¥¿¡ ´êÀ» ¶§±îÁö ¶³¾î¶ß¸°´Ù.
+    // bfsï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ Å½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ß¸ï¿½ï¿½ï¿½.
     //for (int i = 0; i <)
 
     return 0;
